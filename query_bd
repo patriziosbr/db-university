@@ -149,6 +149,7 @@ SELECT `students`.`registration_number`, `students`.`name`, `students`.`surname`
 		`courses`.`name`,
         `exams`.`date`,
         `exam_student`.`vote`
+        
 FROM `students`
 INNER JOIN `exam_student`
 ON `students`.`id` = `exam_student`.`student_id`

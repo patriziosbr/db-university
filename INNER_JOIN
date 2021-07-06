@@ -1,0 +1,75 @@
+1. Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
+
+SELECT `students`.`name`, `degrees`.`name`
+FROM `students`
+INNER JOIN `degrees`
+ON `students`.`id` = `degrees`.`id`
+WHERE `degrees`.`name` = 'Corso di Laurea in Economia'
+
+SELECT `students`.`registration_number`, `degrees`.`name`
+FROM `degrees`
+INNER JOIN `students`
+ON `degrees`.id = `students`.`id`
+WHERE `degrees`.`name` = 'Corso di Laurea in Economia'
+
+/*/*/*/* non ho capito /*/*/*/*/ risultato 1 solo studente
+
+2. Selezionare tutti i Corsi di Laurea del Dipartimento di Neuroscienze
+
+SELECT `degrees`.`name`, `departments`.`name`
+FROM `degrees`
+INNER JOIN `departments`
+ON `degrees`.`id` = `departments`.`id`
+WHERE `departments`.`name` = 'dipartimento di neuroscienze'
+
+3. Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
+
+SELECT * 
+FROM `teachers`
+INNER JOIN `course_teacher`
+ON `teachers`.`id` = `teacher_id`
+INNER JOIN `courses`
+ON `course_teacher`.`course_id` = `courses`.`id`
+WHERE `teachers`.`id` = 44
+
+4. Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il
+relativo dipartimento, in ordine alfabetico per cognome e nome
+
+SELECT `students`.`name`, `students`.`surname`, `degrees`.`name`, `degrees`.`level`, `departments`.`name`
+FROM `students`
+INNER JOIN `degrees`
+ON `students`.`id` = `degrees`.`id`
+INNER JOIN `departments`
+ON `degrees`.`id` = `departments`.`id`  
+ORDER BY `students`.`name`, `students`.`surname` ASC
+
+
+#5. Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
+
+SELECT *
+FROM `teachers`
+INNER JOIN `course_teacher`
+ON `teachers`.`id` = `teacher_id`
+INNER JOIN `courses`
+ON `course_teacher`.`course_id` = `courses`.`id`
+INNER JOIN `degrees`
+ON `courses`.`degree_id` = `degrees`.`id`
+INNER JOIN `students`
+ON `degrees`.`id` = `students`.`id`
+
+#6. Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
+
+SELECT *
+FROM `teachers`
+INNER JOIN `course_teacher`
+ON `teachers`.`id` = `teacher_id`
+INNER JOIN `courses`
+ON `course_teacher`.`course_id` = `courses`.`id`
+INNER JOIN `degrees`
+ON `courses`.`degree_id` = `degrees`.`id`
+INNER JOIN `departments`
+ON `degrees`.`id` = `departments`.`id`
+WHERE  `departments`.`name` =  'Dipartimento di Matematica'
+
+
+
