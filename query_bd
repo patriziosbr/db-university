@@ -17,7 +17,7 @@ ORDER BY `students`.`date_of_birth`  ASC
 
 SELECT * 
 FROM `courses`
-WHERE `cfu` >= 10
+WHERE `cfu` > 10
 ORDER BY `courses`.`cfu` ASC
 
 3. Selezionare tutti gli studenti che hanno più di 30 anni
@@ -59,7 +59,101 @@ SELECT *
 FROM `teachers`
 WHERE `phone` IS NULL
 
+//**//**//**//**//**//**  GROUP BY
+
+9.Contare gli studenti raggruppati per anno di anno_nascita
+
+SELECT YEAR(`date_of_birth) AS `anno_nascita`, COUNT(*) AS `numero_studenti`
+FROM `students`
+GROUP BY `anno_nascita`; 
+
+10.prendere voto più basso per ogni appello di esame 
+
+SELECT `exam_id`, MIN(`vote`) AS `voto_peggiore`
+FROM `exam_students`
+GROUP BY `exam_id`
+
+11. Contare gli appelli di esame nel mese di luglio per giorno 
+
+SELECT DAY(`date`), COUNT(*)
+FROM `exams`
+GROUP BY DAY(`date`)
 
 
+INNER-JOINT
+
+SELECT `departments`.`name` AS `nome_dipartimento`, `degrees.name` AS `degree_name`, `level`, `degree.website` AS `deg_web`
+FROM `departments`
+INNER JOINT `degrees`
+ON `departments`.`id` = `degrees`.`department_id`
+
+LEFT 
+
+SELECT * 
+FROM `departments` 
+LEFT JOIN `degree`
+ON `department_id`.`id` = `degrees`.`department_id`
 
 
+IN CALASS//**///**///***//// after 11 
+
+SELECT * 
+FROM `courses`
+INNER JOIN `degrees`
+ON `courses`.`degree_id` = `degrees`.`id`
+WHERE `degrees`.`name` = 'Corso di Laurea in Informatica';
+(per evitare ambiguita nome_tabella.nome_colonna)
+
+/*/*/*/*Selezionare tutti i corsi con id 144
+
+SELECT * 
+FROM `courses`
+INNER JOIN `exams`
+ON `courses`.`id` = `exams`.`course_id`
+WHERE `courses`.`id` = 144
+
+/*/*/*/ Selezionare 
+
+SELECT `departments`.`name` AS `dep_name`
+FROM `departments`
+INNER JOIN `degrees`
+ON `departments`.`id` = `degrees`.`department_id`
+WHERE `degrees`.`name` = "Corso di Laurea in Diritto dell'Economia"
+
+
+/*/*/* tre tabelle
+
+SELECT `exams`.*
+FROM `exams`
+INNER JOIN `courses`
+ON `exams`.`course_id` = `courses`.`id`
+INNER JOIN `degrees`
+ON `courses`.`degree_id` = `degrees`.`id`
+WHERE `degrees`.`name` = 'Corso di Laurea Magistrale in fisica'
+AND `courses`.`year` = 1
+
+#selezionare tutti i docenti 
+
+SELECT COUNT(DISTINCT `teachers`.`id`) AS `numero_insegnanti_lettere`
+FROM `teachers`
+INNER JOIN `course_teacher`
+ON `teachers`.`id` = `course_teacher`.`teacher_id`
+INNER JOIN `courses`
+ON `course_teacher`.`course_id` = `courses`.`id`
+INNER JOIN `degrees`
+ON `courses`.`degree_id` = `degrees`.`id`
+WHERE `degrees`.`name` = 'Corso di laurea in lettere'
+
+
+SELECT `students`.`registration_number`, `students`.`name`, `students`.`surname`,
+		`courses`.`name`,
+        `exams`.`date`,
+        `exam_student`.`vote`
+FROM `students`
+INNER JOIN `exam_student`
+ON `students`.`id` = `exam_student`.`student_id`
+INNER JOIN `exams`
+ON `exam_student`.`exam_id` = `exams`.`id`
+INNER JOIN `courses`
+ON `exams`.`course_id` = `courses`.`id`
+WHERE `students`.`registration_number` = '620320' AND `exam_student`.`vote` >= 18
